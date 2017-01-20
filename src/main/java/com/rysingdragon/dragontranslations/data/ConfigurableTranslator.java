@@ -16,14 +16,14 @@ import java.util.Map;
 
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 
-public class ConfigurableTranslations implements Translator {
+public class ConfigurableTranslator implements Translator {
 
     private Map<String, HoconFile> langFiles;
     private Path langDir;
     private Locale defaultLocale;
 
     //Create a new instance of ConfigurableTranslations, providing the path of the language directory to use.
-    public ConfigurableTranslations(Path langDir, Locale defaultLocale) {
+    public ConfigurableTranslator(Path langDir, Locale defaultLocale) {
         this.langFiles = new HashMap<>();
         this.langDir = langDir;
         this.defaultLocale = defaultLocale;

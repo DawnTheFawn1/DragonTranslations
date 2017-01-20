@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class AssetTranslations implements Translator {
+public class AssetTranslator implements Translator {
 
     private Map<String, Map<String, Text>> translations;
     private Locale defaultLocale;
 
-    public AssetTranslations(Locale defaultLocale) {
+    public AssetTranslator(Locale defaultLocale) {
         this.translations = new HashMap<>();
         this.defaultLocale = defaultLocale;
     }
