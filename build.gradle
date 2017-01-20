@@ -1,0 +1,21 @@
+plugins {
+    id 'org.spongepowered.plugin' version '0.7'
+    id 'flavor.pie.promptsign' version '1.0.2'
+}
+
+group = "com.rysingdragon.dragontranslations"
+version = "1.0.0"
+archivesBaseName = "DragonTranslations"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def spongeVersion = '5.1.0'
+
+dependencies {
+    compile 'org.spongepowered:spongeapi:5.0.0'
+}
+
+jar {
+    version = "${spongeVersion}-${project.version}"
+}
