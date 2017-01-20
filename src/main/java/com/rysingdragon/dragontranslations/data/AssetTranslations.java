@@ -2,7 +2,7 @@ package com.rysingdragon.dragontranslations.data;
 
 import com.rysingdragon.dragontranslations.DragonTranslations;
 import com.rysingdragon.dragontranslations.InvalidLocaleException;
-import com.rysingdragon.dragontranslations.Translatable;
+import com.rysingdragon.dragontranslations.Translator;
 
 import org.spongepowered.api.asset.Asset;
 import org.spongepowered.api.text.Text;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class AssetTranslations implements Translatable {
+public class AssetTranslations implements Translator {
 
     private Map<String, Map<String, Text>> translations;
     private Locale defaultLocale;

@@ -15,7 +15,7 @@ import com.google.inject.Inject;
 
 @Plugin(
         id = "dragontranslations",
-        version = "1.0.0",
+        version = "1.0.1",
         name = "DragonTranslations",
         description = "Resource for creating translations in Sponge plugins",
         authors = {

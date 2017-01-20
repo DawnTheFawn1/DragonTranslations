@@ -2,7 +2,7 @@ package com.rysingdragon.dragontranslations.data;
 
 import com.rysingdragon.dragontranslations.DragonTranslations;
 import com.rysingdragon.dragontranslations.InvalidLocaleException;
-import com.rysingdragon.dragontranslations.Translatable;
+import com.rysingdragon.dragontranslations.Translator;
 
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.serializer.TextSerializers;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 
-public class ConfigurableTranslations implements Translatable {
+public class ConfigurableTranslations implements Translator {
 
     private Map<String, HoconFile> langFiles;
     private Path langDir;

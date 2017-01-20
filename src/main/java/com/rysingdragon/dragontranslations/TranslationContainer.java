@@ -9,17 +9,17 @@ import java.util.Optional;
 //Translations from all plugins will be stored here.
 public final class TranslationContainer {
 
-    private static Map<PluginContainer, Translatable> translatables = new HashMap<>();
+    private static Map<PluginContainer, Translator> translators = new HashMap<>();
 
     //Set the translation type to use.
-    public static void setTranslation(PluginContainer container, Translatable translatable) {
-        translatables.put(container, translatable);
+    public static void setTranslator(PluginContainer container, Translator translatable) {
+        translators.put(container, translatable);
     }
 
     //Get translations from a plugin.
-    public static Optional<Translatable> getTranslatable(PluginContainer container) {
-        if (translatables.containsKey(container)) {
-            return Optional.of(translatables.get(container));
+    public static Optional<Translator> getTranslator(PluginContainer container) {
+        if (translators.containsKey(container)) {
+            return Optional.of(translators.get(container));
         }
         return Optional.empty();
     }

@@ -4,7 +4,7 @@ import org.spongepowered.api.text.Text;
 
 import java.util.Locale;
 
-public interface Translatable {
+public interface Translator {
 
     //Get the translated text
     Text translate(Locale locale, String key);
