@@ -1,4 +1,4 @@
-package com.rysingdragon.dragontranslations;
+package com.rysingdragon.dragontranslations.exceptions;
 
 public class InvalidLocaleException extends Exception {
 

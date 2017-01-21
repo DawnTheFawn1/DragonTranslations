@@ -1,17 +1,12 @@
 package com.rysingdragon.dragontranslations;
 
-import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.translation.locale.Locales;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import com.google.inject.Inject;
 
 @Plugin(
         id = "dragontranslations",
@@ -23,20 +18,6 @@ import com.google.inject.Inject;
         }
 )
 public class DragonTranslations {
-
-    @Inject
-    public PluginContainer PLUGIN_CONTAINER;
-
-    public static DragonTranslations INSTANCE;
-
-    @Listener
-    public void onPreInit(GamePreInitializationEvent event) {
-        INSTANCE = this;
-    }
-
-    public static PluginContainer getPluginContainer() {
-        return DragonTranslations.INSTANCE.PLUGIN_CONTAINER;
-    }
 
     public static Map<Locale, String> getAllMinecraftLocales() {
         Map<Locale, String> locales = new HashMap<>();

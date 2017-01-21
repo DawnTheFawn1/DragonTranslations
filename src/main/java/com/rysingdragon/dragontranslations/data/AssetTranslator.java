@@ -1,7 +1,8 @@
 package com.rysingdragon.dragontranslations.data;
 
 import com.rysingdragon.dragontranslations.DragonTranslations;
-import com.rysingdragon.dragontranslations.InvalidLocaleException;
+import com.rysingdragon.dragontranslations.exceptions.InvalidFileException;
+import com.rysingdragon.dragontranslations.exceptions.InvalidLocaleException;
 import com.rysingdragon.dragontranslations.Translator;
 
 import org.spongepowered.api.asset.Asset;
@@ -24,8 +25,16 @@ public class AssetTranslator implements Translator {
         this.defaultLocale = defaultLocale;
     }
 
-    //Adds translations for a Locale using the specified Asset
+    //Adds translations for a Locale using an asset file with .lang extension
     public void addTranslation(Locale locale, Asset asset) {
+        if (!asset.getFileName().endsWith(".lang")) {
+            try {
+                throw new InvalidFileException("Asset provided must be a .lang file, Found: " + asset.getFileName());
+            } catch (InvalidFileException e) {
+                e.printStackTrace();
+            }
+        }
+
         if (!DragonTranslations.getAllMinecraftLocales().keySet().contains(locale)) {
             try {
                 throw new InvalidLocaleException("Provided Locale not available in Minecraft");

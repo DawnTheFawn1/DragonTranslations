@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.rysingdragon.dragontranslations"
-version = "1.0.0"
+version = "1.0.1"
 archivesBaseName = "DragonTranslations"
 
 sourceCompatibility = 1.8

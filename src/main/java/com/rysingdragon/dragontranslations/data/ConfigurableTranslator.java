@@ -1,7 +1,7 @@
 package com.rysingdragon.dragontranslations.data;
 
 import com.rysingdragon.dragontranslations.DragonTranslations;
-import com.rysingdragon.dragontranslations.InvalidLocaleException;
+import com.rysingdragon.dragontranslations.exceptions.InvalidLocaleException;
 import com.rysingdragon.dragontranslations.Translator;
 
 import org.spongepowered.api.text.Text;
@@ -18,7 +18,7 @@ import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 
 public class ConfigurableTranslator implements Translator {
 
-    private Map<String, HoconFile> langFiles;
+    private Map<Locale, HoconFile> langFiles;
     private Path langDir;
     private Locale defaultLocale;
 
@@ -27,11 +27,11 @@ public class ConfigurableTranslator implements Translator {
         this.langFiles = new HashMap<>();
         this.langDir = langDir;
         this.defaultLocale = defaultLocale;
-        this.createLangFile(defaultLocale);
+        this.addLocale(defaultLocale);
     }
 
-    //Create a file to provide translations for a Locale.
-    public void createLangFile(Locale locale) {
+    //Add a Locale and create the necessary file for it if none found.
+    public void addLocale(Locale locale) {
         //Locale is not a supported Locale in Minecraft.
         if (!DragonTranslations.getAllMinecraftLocales().keySet().contains(locale)) {
             try {
@@ -40,26 +40,26 @@ public class ConfigurableTranslator implements Translator {
                 e.printStackTrace();
             }
         }
+        Path path = this.langDir.resolve(locale.toString() + ".conf");
         try {
-            Path path = this.langDir.resolve(locale.toString() + ".conf");
             if (!Files.exists(path.getParent())) {
                 Files.createDirectories(path.getParent());
             }
             if (!Files.exists(path)) {
                 Files.createFile(path);
             }
-            HoconFile langFile = new HoconFile(HoconConfigurationLoader.builder().setPath(path).build());
-            langFile.load();
-            this.langFiles.put(locale.toString(), langFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        HoconFile langFile = new HoconFile(HoconConfigurationLoader.builder().setPath(path).build());
+        langFile.load();
+        this.langFiles.put(locale, langFile);
     }
 
     //Whether a translation key exists for the specified Locale.
     public boolean keyExists(Locale locale, String key) {
-        if (langFiles.containsKey(locale.toString())) {
-            HoconFile file = langFiles.get(locale.toString());
+        if (langFiles.containsKey(locale)) {
+            HoconFile file = langFiles.get(locale);
             return !file.getNode(key.toLowerCase().split("\\.")).isVirtual();
         } else {
             return false;
@@ -68,8 +68,8 @@ public class ConfigurableTranslator implements Translator {
 
     //Set a new translation for the specified key, or create if if hadn't existed previously.
     public void addTranslation(Locale locale, String key, Text value) {
-        if (langFiles.containsKey(locale.toString())) {
-            HoconFile file = langFiles.get(locale.toString());
+        if (langFiles.containsKey(locale)) {
+            HoconFile file = langFiles.get(locale);
             String serialized = TextSerializers.FORMATTING_CODE.serialize(value);
             file.getNode(key.toLowerCase().split("\\.")).setValue(serialized);
             file.save();
@@ -80,10 +80,10 @@ public class ConfigurableTranslator implements Translator {
     @Override
     public Text translate(Locale locale, String key) {
         if (keyExists(locale, key)) {
-            HoconFile file = langFiles.get(locale.toString());
+            HoconFile file = langFiles.get(locale);
             return TextSerializers.FORMATTING_CODE.deserialize(file.getNode(key.toLowerCase().split("\\.")).getString());
         } else if (keyExists(getDefaultLocale(), key)){
-            HoconFile file = langFiles.get(getDefaultLocale().toString());
+            HoconFile file = langFiles.get(getDefaultLocale());
             return TextSerializers.FORMATTING_CODE.deserialize(file.getNode(key.toLowerCase().split("\\.")).getString());
         } else {
             return Text.of(key);

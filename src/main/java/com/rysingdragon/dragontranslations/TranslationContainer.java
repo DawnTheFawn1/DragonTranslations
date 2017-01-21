@@ -18,9 +18,6 @@ public final class TranslationContainer {
 
     //Get translations from a plugin.
     public static Optional<Translator> getTranslator(PluginContainer container) {
-        if (translators.containsKey(container)) {
-            return Optional.of(translators.get(container));
-        }
-        return Optional.empty();
+        return Optional.ofNullable(translators.get(container));
     }
 }
