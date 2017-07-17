@@ -4,9 +4,9 @@ import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.translation.locale.Locales;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 @Plugin(
         id = "dragontranslations",
@@ -19,14 +19,14 @@ import java.util.Map;
 )
 public class DragonTranslations {
 
-    public static Map<Locale, String> getAllMinecraftLocales() {
-        Map<Locale, String> locales = new HashMap<>();
+    public static List<Locale> getAllMinecraftLocales() {
+        List<Locale> locales = new ArrayList<>();
         Field[] fields = Locales.class.getFields();
         for (Field field : fields) {
             if (Locale.class.isAssignableFrom(field.getType()) && !field.getName().equalsIgnoreCase("DEFAULT")) {
                 try {
                     Locale locale = (Locale) field.get(null);
-                    locales.put(locale, locale.getCountry());
+                    locales.add(locale);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

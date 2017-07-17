@@ -4,6 +4,8 @@ import com.rysingdragon.dragontranslations.DragonTranslations;
 import com.rysingdragon.dragontranslations.exceptions.InvalidLocaleException;
 import com.rysingdragon.dragontranslations.Translator;
 
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
@@ -14,6 +16,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 
 public class ConfigurableTranslator implements Translator {
@@ -22,18 +25,26 @@ public class ConfigurableTranslator implements Translator {
     private Path langDir;
     private Locale defaultLocale;
 
-    //Create a new instance of ConfigurableTranslations, providing the path of the language directory to use.
-    public ConfigurableTranslator(Path langDir, Locale defaultLocale) {
+    //Create a new instance of ConfigurableTranslator, providing the path of the language directory to use.
+    public ConfigurableTranslator(Object plugin, Path langDir, Locale defaultLocale) {
         this.langFiles = new HashMap<>();
         this.langDir = langDir;
         this.defaultLocale = defaultLocale;
         this.addLocale(defaultLocale);
+        PluginContainer container = Sponge.getPluginManager().fromInstance(plugin)
+                .orElseThrow(() -> new IllegalArgumentException("You must pass in a valid plugin instance"));
+        TranslationContainer.setTranslator(container, this);
+    }
+
+    //Create a new instance of ConfigurableTranslator with a default Locale of English
+    public ConfigurableTranslator(PluginContainer plugin, Path langDir) {
+        this(plugin, langDir, Locale.ENGLISH);
     }
 
     //Add a Locale and create the necessary file for it if none found.
     public void addLocale(Locale locale) {
         //Locale is not a supported Locale in Minecraft.
-        if (!DragonTranslations.getAllMinecraftLocales().keySet().contains(locale)) {
+        if (!DragonTranslations.getAllMinecraftLocales().contains(locale)) {
             try {
                 throw new InvalidLocaleException("Provided Locale not available in Minecraft");
             } catch (InvalidLocaleException e) {
@@ -53,6 +64,9 @@ public class ConfigurableTranslator implements Translator {
         }
         HoconFile langFile = new HoconFile(HoconConfigurationLoader.builder().setPath(path).build());
         langFile.load();
+        if (!locale.equals(getDefaultLocale())) {
+            langFile.useValuesFromFile(this.langFiles.get(getDefaultLocale()));
+        }
         this.langFiles.put(locale, langFile);
     }
 
@@ -88,6 +102,14 @@ public class ConfigurableTranslator implements Translator {
         } else {
             return Text.of(key);
         }
+    }
+
+    public Path getLangDir() {
+        return this.langDir;
+    }
+
+    public Map<Locale, HoconFile> getLangFiles() {
+        return ImmutableMap.copyOf(this.langFiles);
     }
 
     @Override

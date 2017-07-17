@@ -4,16 +4,16 @@ plugins {
 }
 
 group = "com.rysingdragon.dragontranslations"
-version = "1.0.1"
+version = "1.1.0"
 archivesBaseName = "DragonTranslations"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-def spongeVersion = '5.1.0'
+def spongeVersion = '6.0.0'
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:5.0.0'
+    compile 'org.spongepowered:spongeapi:' + spongeVersion
 }
 
 jar {

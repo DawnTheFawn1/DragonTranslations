@@ -32,6 +32,7 @@ public class HoconFile {
 
     public void useValuesFromFile(HoconFile other) {
         this.node.mergeValuesFrom(other.getNode());
+        save();
     }
 
     public CommentedConfigurationNode getNode(Object... path) {

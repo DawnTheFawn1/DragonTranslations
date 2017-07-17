@@ -1,5 +1,6 @@
-package com.rysingdragon.dragontranslations;
+package com.rysingdragon.dragontranslations.data;
 
+import com.rysingdragon.dragontranslations.Translator;
 import org.spongepowered.api.plugin.PluginContainer;
 
 import java.util.HashMap;
@@ -12,7 +13,7 @@ public final class TranslationContainer {
     private static Map<PluginContainer, Translator> translators = new HashMap<>();
 
     //Set the translation type to use.
-    public static void setTranslator(PluginContainer container, Translator translatable) {
+    protected static void setTranslator(PluginContainer container, Translator translatable) {
         translators.put(container, translatable);
     }
 
